@@ -14,7 +14,15 @@
 
 ---
 
-## 🌍 The Mission: Halting a Fatal \$200B Global Crisis
+## 🖥️ Live Forensic Telemetry & On-Chain Provenance Console
+
+<p align="center">
+  <img src="assets/dashboard_preview.png" alt="TraceRx AI Live Dashboard" width="100%" style="border-radius: 8px; border: 1px solid #1e293b;" />
+</p>
+
+---
+
+## 🌍 The Mission: Halting a Fatal $200B Global Crisis
 
 According to the **World Health Organization (WHO)**, over **1 in 10 medical products** in developing and middle-income nations are counterfeit, substandard, or falsified. This crisis inflicts over **1,000,000 preventable deaths each year** and fuels an illicit global criminal syndicate exceeding **\$200 billion annually**.
 
