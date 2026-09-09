@@ -1,0 +1,216 @@
+/* TraceRx AI - Cyber-Medical Dark HUD Stylesheet */
+
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,600;0,700;0,800;1,400&family=Rajdhani:wght@500;600;700&display=swap');
+
+:root {
+  --bg-primary: #06090e;
+  --bg-secondary: #0c121d;
+  --bg-card: rgba(14, 23, 38, 0.75);
+  --cyan-glow: #00f0ff;
+  --emerald-glow: #00ff9d;
+  --crimson-glow: #ff0055;
+  --amber-glow: #ffb800;
+  --border-cyan: rgba(0, 240, 255, 0.25);
+  --border-emerald: rgba(0, 255, 157, 0.25);
+  --border-crimson: rgba(255, 0, 85, 0.35);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: #e2e8f0;
+  font-family: 'JetBrains Mono', monospace;
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+h1, h2, h3, .hud-heading {
+  font-family: 'Rajdhani', sans-serif;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* Scanline and CRT Glitch FX */
+.cyber-scanlines {
+  position: relative;
+}
+.cyber-scanlines::before {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: 0; left: 0; bottom: 0; right: 0;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+  z-index: 10;
+  background-size: 100% 3px, 6px 100%;
+  pointer-events: none;
+}
+
+/* Glowing Panels */
+.cyber-panel {
+  background: var(--bg-card);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--border-cyan);
+  box-shadow: 0 0 15px rgba(0, 240, 255, 0.06), inset 0 0 10px rgba(0, 240, 255, 0.03);
+  position: relative;
+}
+
+.cyber-panel::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 10px;
+  height: 10px;
+  border-bottom: 2px solid var(--cyan-glow);
+  border-right: 2px solid var(--cyan-glow);
+  pointer-events: none;
+}
+
+.cyber-panel-danger {
+  border-color: var(--border-crimson);
+  box-shadow: 0 0 20px rgba(255, 0, 85, 0.2), inset 0 0 12px rgba(255, 0, 85, 0.08);
+}
+
+.cyber-panel-success {
+  border-color: var(--border-emerald);
+  box-shadow: 0 0 20px rgba(0, 255, 157, 0.15);
+}
+
+/* Pulsing Badge Indicator */
+.pulse-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.pulse-dot-cyan {
+  background-color: var(--cyan-glow);
+  box-shadow: 0 0 8px var(--cyan-glow);
+  animation: pulse-glow 1.5s infinite;
+}
+
+.pulse-dot-emerald {
+  background-color: var(--emerald-glow);
+  box-shadow: 0 0 8px var(--emerald-glow);
+  animation: pulse-glow 1.2s infinite;
+}
+
+.pulse-dot-crimson {
+  background-color: var(--crimson-glow);
+  box-shadow: 0 0 10px var(--crimson-glow);
+  animation: pulse-alarm 0.8s infinite;
+}
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.85); }
+}
+
+@keyframes pulse-alarm {
+  0%, 100% { opacity: 1; transform: scale(1.1); box-shadow: 0 0 14px #ff0055; }
+  50% { opacity: 0.5; transform: scale(0.9); box-shadow: 0 0 4px #ff0055; }
+}
+
+/* Laser Scanning Reticle */
+.scanning-laser {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #00f0ff, transparent);
+  box-shadow: 0 0 12px #00f0ff;
+  animation: laser-scan 2.4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  z-index: 15;
+  pointer-events: none;
+}
+
+@keyframes laser-scan {
+  0% { top: 0%; opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { top: 100%; opacity: 0; }
+}
+
+/* Glowing Cyber Buttons */
+.cyber-btn {
+  background: rgba(14, 165, 233, 0.1);
+  border: 1px solid rgba(14, 165, 233, 0.4);
+  color: #38bdf8;
+  transition: all 0.2s ease;
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.cyber-btn:hover {
+  background: rgba(14, 165, 233, 0.25);
+  border-color: #38bdf8;
+  box-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
+  color: #fff;
+}
+
+.cyber-btn-emerald {
+  background: rgba(0, 255, 157, 0.1);
+  border-color: rgba(0, 255, 157, 0.5);
+  color: #00ff9d;
+}
+.cyber-btn-emerald:hover {
+  background: rgba(0, 255, 157, 0.25);
+  box-shadow: 0 0 18px rgba(0, 255, 157, 0.4);
+  color: #fff;
+}
+
+.cyber-btn-crimson {
+  background: rgba(255, 0, 85, 0.1);
+  border-color: rgba(255, 0, 85, 0.5);
+  color: #ff0055;
+}
+.cyber-btn-crimson:hover {
+  background: rgba(255, 0, 85, 0.25);
+  box-shadow: 0 0 18px rgba(255, 0, 85, 0.5);
+  color: #fff;
+}
+
+.cyber-btn-amber {
+  background: rgba(255, 184, 0, 0.1);
+  border-color: rgba(255, 184, 0, 0.5);
+  color: #ffb800;
+}
+.cyber-btn-amber:hover {
+  background: rgba(255, 184, 0, 0.25);
+  box-shadow: 0 0 18px rgba(255, 184, 0, 0.5);
+  color: #fff;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-track {
+  background: #06090e;
+}
+::-webkit-scrollbar-thumb {
+  background: #1e293b;
+  border-radius: 2px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #00f0ff;
+}
+
+/* Alert Banner Animation */
+.alarm-flash {
+  animation: alarm-flashing 1.2s ease-in-out infinite alternate;
+}
+
+@keyframes alarm-flashing {
+  from { background-color: rgba(225, 29, 72, 0.15); border-color: rgba(225, 29, 72, 0.6); }
+  to { background-color: rgba(225, 29, 72, 0.35); border-color: #ff0055; box-shadow: 0 0 25px rgba(255, 0, 85, 0.4); }
+}

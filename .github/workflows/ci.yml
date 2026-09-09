@@ -1,0 +1,42 @@
+name: TraceRx AI Forensic CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  forensic-verification:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install System Dependencies (OpenCV & OpenGL)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libgl1-mesa-glx libglib2.0-0
+
+      - name: Install Python Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run Cryptographic & Vision Forensics Test Suite
+        env:
+          PYTHONPATH: .
+        run: |
+          pytest tests/ -v --junitxml=junit.xml
+
+      - name: Execute High-Throughput Latency Benchmark
+        env:
+          PYTHONPATH: .
+        run: |
+          python tests/benchmark_suite.py

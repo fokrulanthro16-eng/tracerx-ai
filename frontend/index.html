@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TraceRx AI — Autonomous Pharmaceutical Vision Forensics & Provenance Engine</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            cyberDark: '#06090e',
+            cyberCard: '#0c121d',
+            cyanGlow: '#00f0ff',
+            emeraldGlow: '#00ff9d',
+            crimsonGlow: '#ff0055',
+            amberGlow: '#ffb800'
+          }
+        }
+      }
+    }
+  </script>
+  
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body class="bg-[#06090e] text-slate-200 min-h-screen flex flex-col cyber-scanlines">
+
+  <!-- ================= TOP HUD TELEMETRY BAR ================= -->
+  <header class="border-b border-cyan-500/20 bg-[#090f18]/90 backdrop-blur sticky top-0 z-50 px-4 py-2.5 flex flex-wrap items-center justify-between shadow-lg shadow-cyan-500/5">
+    <!-- Brand Title -->
+    <div class="flex items-center space-x-3">
+      <div class="w-9 h-9 rounded bg-gradient-to-br from-cyan-500 to-blue-700 flex items-center justify-center shadow-lg shadow-cyan-500/40 border border-cyan-300/30">
+        <i data-lucide="shield-check" class="w-5 h-5 text-black stroke-[2.5]"></i>
+      </div>
+      <div>
+        <div class="flex items-center space-x-2">
+          <span class="hud-heading text-lg font-extrabold text-white tracking-wider">TRACERX</span>
+          <span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-cyan-500/20 text-cyan-400 border border-cyan-500/40">AI FORENSICS</span>
+          <span class="text-xs text-slate-500 font-mono">v1.0-UPAI</span>
+        </div>
+        <p class="text-[10px] text-slate-400 font-mono tracking-tight hidden sm:block">CRYPTOGRAPHIC PHARMACEUTICAL PROVENANCE ENGINE</p>
+      </div>
+    </div>
+
+    <!-- Live Telemetry Badges -->
+    <div class="flex items-center space-x-2 sm:space-x-4 text-xs font-mono mt-2 sm:mt-0">
+      <div class="flex items-center space-x-1.5 px-2.5 py-1 rounded bg-slate-900/80 border border-emerald-500/30 text-emerald-400 shadow-sm">
+        <span class="pulse-dot pulse-dot-emerald"></span>
+        <span class="text-[11px] font-semibold">AI ENGINE: ACTIVE</span>
+      </div>
+
+      <div class="flex items-center space-x-1.5 px-2.5 py-1 rounded bg-slate-900/80 border border-cyan-500/30 text-cyan-400">
+        <i data-lucide="blocks" class="w-3.5 h-3.5"></i>
+        <span class="text-[11px]">LEDGER: <span id="telemetry-block-height" class="font-bold text-white">Block #4</span></span>
+      </div>
+
+      <div class="flex items-center space-x-1.5 px-2.5 py-1 rounded bg-slate-900/80 border border-cyan-500/30 text-cyan-400">
+        <i data-lucide="zap" class="w-3.5 h-3.5 text-amber-400"></i>
+        <span class="text-[11px]">LATENCY: <span id="telemetry-latency" class="font-bold text-emerald-400">&lt; 14ms</span></span>
+      </div>
+
+      <div class="hidden md:flex items-center space-x-1.5 px-2.5 py-1 rounded bg-slate-900/80 border border-slate-700/60 text-slate-300">
+        <i data-lucide="network" class="w-3.5 h-3.5 text-blue-400"></i>
+        <span class="text-[11px]">LOCAL EVM (4242)</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= JUDGE QUICK SCENARIO SELECTOR BAR ================= -->
+  <section class="bg-[#0c1322] border-b border-slate-800 px-4 py-2 flex flex-wrap items-center justify-between gap-2 text-xs">
+    <div class="flex items-center space-x-2">
+      <span class="text-slate-400 uppercase tracking-wider font-semibold text-[11px] flex items-center">
+        <i data-lucide="award" class="w-3.5 h-3.5 mr-1 text-amber-400"></i>
+        Judge Evaluation Suite:
+      </span>
+      <span class="text-[11px] text-slate-500 hidden lg:inline">One-click evaluation scenarios</span>
+    </div>
+
+    <div class="flex items-center space-x-2 flex-wrap gap-y-1">
+      <button id="btn-scenario-1" class="cyber-btn cyber-btn-emerald px-3 py-1.5 rounded text-xs flex items-center space-x-1.5">
+        <i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i>
+        <span>1: Genuine Pfizer Drug</span>
+      </button>
+
+      <button id="btn-scenario-2" class="cyber-btn cyber-btn-crimson px-3 py-1.5 rounded text-xs flex items-center space-x-1.5">
+        <i data-lucide="copy-slash" class="w-3.5 h-3.5"></i>
+        <span>2: Counterfeit QR Reuse Trap</span>
+      </button>
+
+      <button id="btn-scenario-3" class="cyber-btn cyber-btn-amber px-3 py-1.5 rounded text-xs flex items-center space-x-1.5">
+        <i data-lucide="alert-triangle" class="w-3.5 h-3.5"></i>
+        <span>3: Tampered Packaging Alert</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- ================= GLOBAL CRITICAL ALERT BANNER ================= -->
+  <div id="alarm-banner" class="hidden mx-4 mt-3 p-3.5 rounded cyber-panel cyber-panel-danger alarm-flash text-rose-200 text-xs flex items-center justify-between">
+    <div class="flex items-center space-x-3">
+      <div class="w-8 h-8 rounded-full bg-rose-600/30 flex items-center justify-center border border-rose-500">
+        <i data-lucide="siren" class="w-5 h-5 text-rose-400 animate-pulse"></i>
+      </div>
+      <div>
+        <h4 id="alarm-title" class="font-bold text-sm tracking-wide text-rose-300 uppercase">INTERCEPTION ALERT TRIGGERED</h4>
+        <p id="alarm-message" class="font-mono text-xs text-rose-100 mt-0.5">Critical counterfeit detection details.</p>
+      </div>
+    </div>
+    <button onclick="dismissAlarm()" class="px-2 py-1 text-[11px] text-rose-300 hover:text-white border border-rose-500/40 rounded bg-rose-950/40">
+      DISMISS
+    </button>
+  </div>
+
+  <!-- ================= MAIN DASHBOARD SPLIT GRID ================= -->
+  <main class="flex-1 p-4 grid grid-cols-1 lg:grid-cols-12 gap-4 max-w-[1750px] mx-auto w-full">
+
+    <!-- ================= LEFT COLUMN: INSPECTION CONSOLE (7 COLS) ================= -->
+    <div class="lg:col-span-7 flex flex-col space-y-4">
+
+      <!-- Viewport & Ingestion Panel -->
+      <div class="cyber-panel rounded-lg p-4 flex flex-col space-y-3">
+        <div class="flex items-center justify-between border-b border-cyan-500/20 pb-2">
+          <div class="flex items-center space-x-2">
+            <i data-lucide="scan" class="w-4 h-4 text-cyan-400"></i>
+            <h3 class="text-sm font-bold tracking-wider text-cyan-300">MULTI-SPECTRAL FORENSIC INSPECTION CONSOLE</h3>
+          </div>
+          <div class="flex items-center space-x-2 text-xs">
+            <button id="toggle-camera-btn" class="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 flex items-center space-x-1 transition">
+              <i data-lucide="camera" class="w-3.5 h-3.5 text-cyan-400"></i>
+              <span id="camera-btn-text">Webcam Feed</span>
+            </button>
+            <button id="scan-now-btn" class="cyber-btn px-3 py-1 rounded text-xs flex items-center space-x-1">
+              <i data-lucide="play" class="w-3 h-3 text-cyan-300"></i>
+              <span>EXECUTE SCAN</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Visual Viewport Canvas Area -->
+        <div class="relative bg-slate-950 rounded border border-slate-800 h-[340px] flex items-center justify-center overflow-hidden group">
+          <!-- Laser animation line -->
+          <div id="scanner-laser" class="scanning-laser hidden"></div>
+
+          <!-- Video element for live webcam -->
+          <video id="webcam-video" autoplay playsinline class="hidden w-full h-full object-cover"></video>
+
+          <!-- Packaging Image Preview -->
+          <img id="preview-image" src="" alt="Packaging Inspection Viewport" class="max-h-full max-w-full object-contain select-none">
+
+          <!-- Canvas overlay for bounding boxes & annotations -->
+          <canvas id="overlay-canvas" class="absolute inset-0 pointer-events-none w-full h-full"></canvas>
+
+          <!-- Drag and Drop Overlay when empty -->
+          <div id="dropzone-placeholder" class="absolute inset-0 flex flex-col items-center justify-center text-center p-6 bg-slate-950/80 cursor-pointer border-2 border-dashed border-slate-700/80 hover:border-cyan-500/50 transition">
+            <i data-lucide="upload-cloud" class="w-12 h-12 text-cyan-400/80 mb-2"></i>
+            <p class="text-sm font-semibold text-slate-200">Drag & Drop Drug Packaging Image Here</p>
+            <p class="text-xs text-slate-400 mt-1 font-mono">or click to browse local files / select a scenario above</p>
+            <p class="text-[10px] text-cyan-500/70 mt-2 font-mono">Supports PNG, JPG, WEBP • Auto 600 DPI Micro-print Analysis</p>
+          </div>
+          <input type="file" id="file-input" accept="image/*" class="hidden">
+        </div>
+
+        <!-- Ingestion Toolbar & Manual Batch Override -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-2 pt-1 text-xs font-mono">
+          <div>
+            <label class="block text-[10px] text-slate-400 uppercase">Target Batch ID</label>
+            <input type="text" id="input-batch-id" placeholder="PZ-2026-X99" value="PZ-2026-X99" class="w-full mt-1 px-2 py-1 rounded bg-slate-900 border border-slate-700 text-cyan-300 focus:border-cyan-400 outline-none text-xs">
+          </div>
+          <div>
+            <label class="block text-[10px] text-slate-400 uppercase">Simulated Packaging Text / OCR</label>
+            <input type="text" id="input-ocr-text" placeholder="BATCH: PZ-2026-X99 EXP: 2028-03" value="BATCH: PZ-2026-X99 EXP: 2028-03" class="w-full mt-1 px-2 py-1 rounded bg-slate-900 border border-slate-700 text-slate-300 focus:border-cyan-400 outline-none text-xs">
+          </div>
+          <div class="flex items-end">
+            <label class="flex items-center space-x-2 text-[11px] text-slate-300 cursor-pointer p-1.5 rounded bg-slate-900/60 border border-slate-800 w-full hover:border-slate-700">
+              <input type="checkbox" id="check-force-tamper" class="rounded accent-rose-500">
+              <span class="text-rose-400">Inject Physical Tamper</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Real-time Forensic Radar & Radial Gauges -->
+      <div class="cyber-panel rounded-lg p-4 flex flex-col space-y-3">
+        <div class="flex items-center justify-between border-b border-cyan-500/20 pb-2">
+          <div class="flex items-center space-x-2">
+            <i data-lucide="gauge" class="w-4 h-4 text-cyan-400"></i>
+            <h3 class="text-sm font-bold tracking-wider text-cyan-300">REAL-TIME FORENSIC TELEMETRY GAUGES</h3>
+          </div>
+          <span id="verdict-pill" class="px-2.5 py-0.5 rounded text-xs font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">
+            GENUINE_AUTHENTIC
+          </span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+          <!-- Gauge 1: Authenticity Score -->
+          <div class="bg-slate-900/80 rounded p-3 border border-slate-800 flex flex-col items-center justify-center text-center">
+            <span class="text-[11px] text-slate-400 uppercase font-mono">Authenticity Index</span>
+            <div class="relative w-28 h-28 my-2 flex items-center justify-center">
+              <canvas id="gauge-authenticity" width="112" height="112"></canvas>
+              <div class="absolute inset-0 flex flex-col items-center justify-center">
+                <span id="val-authenticity" class="text-xl font-bold font-mono text-emerald-400">99.4%</span>
+                <span class="text-[9px] text-slate-400">CONFIDENCE</span>
+              </div>
+            </div>
+            <span class="text-[10px] text-slate-500">Threshold: ≥ 88.0%</span>
+          </div>
+
+          <!-- Gauge 2: Print Resolution DPI -->
+          <div class="bg-slate-900/80 rounded p-3 border border-slate-800 flex flex-col items-center justify-center text-center">
+            <span class="text-[11px] text-slate-400 uppercase font-mono">Micro-Print DPI</span>
+            <div class="relative w-28 h-28 my-2 flex items-center justify-center">
+              <canvas id="gauge-dpi" width="112" height="112"></canvas>
+              <div class="absolute inset-0 flex flex-col items-center justify-center">
+                <span id="val-dpi" class="text-xl font-bold font-mono text-cyan-400">600</span>
+                <span class="text-[9px] text-slate-400">DPI DENSITY</span>
+              </div>
+            </div>
+            <span class="text-[10px] text-slate-500">Counterfeit cutoff: &lt; 300</span>
+          </div>
+
+          <!-- Gauge 3: Tampering Index -->
+          <div class="bg-slate-900/80 rounded p-3 border border-slate-800 flex flex-col items-center justify-center text-center">
+            <span class="text-[11px] text-slate-400 uppercase font-mono">Packaging Tamper Index</span>
+            <div class="relative w-28 h-28 my-2 flex items-center justify-center">
+              <canvas id="gauge-tamper" width="112" height="112"></canvas>
+              <div class="absolute inset-0 flex flex-col items-center justify-center">
+                <span id="val-tamper" class="text-xl font-bold font-mono text-emerald-400">0.02</span>
+                <span class="text-[9px] text-slate-400">ANOMALY INDEX</span>
+              </div>
+            </div>
+            <span class="text-[10px] text-slate-500">Anomaly trigger: &gt; 0.25</span>
+          </div>
+        </div>
+
+        <!-- Itemized Forensic Breakdown Table -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1 font-mono text-xs">
+          <div class="bg-slate-950/60 p-2 rounded border border-slate-800/80">
+            <span class="text-[10px] text-slate-500 block">MICRO-PRINT STATUS</span>
+            <span id="item-microprint" class="font-semibold text-emerald-400">CRISP (HIGH RES)</span>
+          </div>
+          <div class="bg-slate-950/60 p-2 rounded border border-slate-800/80">
+            <span class="text-[10px] text-slate-500 block">OVD HOLOGRAM</span>
+            <span id="item-hologram" class="font-semibold text-cyan-400">DIFFRACTIVE (91.2)</span>
+          </div>
+          <div class="bg-slate-950/60 p-2 rounded border border-slate-800/80">
+            <span class="text-[10px] text-slate-500 block">BATCH/EXP MATCH</span>
+            <span id="item-batch-match" class="font-semibold text-emerald-400">MATCHED ON-CHAIN</span>
+          </div>
+          <div class="bg-slate-950/60 p-2 rounded border border-slate-800/80">
+            <span class="text-[10px] text-slate-500 block">EXECUTION LATENCY</span>
+            <span id="item-latency" class="font-semibold text-amber-400">11.8 ms</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ================= RIGHT COLUMN: ON-CHAIN PROVENANCE EXPLORER (5 COLS) ================= -->
+    <div class="lg:col-span-5 flex flex-col space-y-4">
+
+      <!-- Active Batch Provenance Dossier -->
+      <div class="cyber-panel rounded-lg p-4 flex flex-col space-y-3">
+        <div class="flex items-center justify-between border-b border-cyan-500/20 pb-2">
+          <div class="flex items-center space-x-2">
+            <i data-lucide="file-badge" class="w-4 h-4 text-cyan-400"></i>
+            <h3 class="text-sm font-bold tracking-wider text-cyan-300">ON-CHAIN BATCH RECORD</h3>
+          </div>
+          <button id="btn-dispense-action" class="cyber-btn cyber-btn-emerald px-2.5 py-1 rounded text-xs flex items-center space-x-1">
+            <i data-lucide="check" class="w-3 h-3"></i>
+            <span>DISPENSE TO PATIENT</span>
+          </button>
+        </div>
+
+        <div class="space-y-2 text-xs font-mono">
+          <div class="flex items-center justify-between bg-slate-900/90 p-2 rounded border border-slate-800">
+            <span class="text-slate-400">DRUG NAME:</span>
+            <span id="dossier-drug" class="font-bold text-white text-right">Remdesivir (Veklury) 100mg</span>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2">
+            <div class="bg-slate-900/90 p-2 rounded border border-slate-800">
+              <span class="text-[10px] text-slate-400 block">BATCH IDENTIFIER:</span>
+              <span id="dossier-batch" class="font-bold text-cyan-300">PZ-2026-X99</span>
+            </div>
+            <div class="bg-slate-900/90 p-2 rounded border border-slate-800">
+              <span class="text-[10px] text-slate-400 block">PROVENANCE STATUS:</span>
+              <span id="dossier-status" class="font-bold text-emerald-400">RECEIVED_AT_PHARMACY</span>
+            </div>
+          </div>
+
+          <div class="bg-slate-900/90 p-2 rounded border border-slate-800">
+            <span class="text-[10px] text-slate-400 block">MANUFACTURER EVM ADDRESS:</span>
+            <span id="dossier-mfg-addr" class="font-mono text-[11px] text-slate-300 break-all">0x48c1e2bf65d79ba921e285a812cf53c1d9b48021</span>
+          </div>
+
+          <div class="bg-slate-900/90 p-2 rounded border border-slate-800">
+            <span class="text-[10px] text-slate-400 block">MERKLE LEAF RECORD HASH:</span>
+            <span id="dossier-record-hash" class="font-mono text-[11px] text-cyan-400/90 break-all">0x8f2d93e1b742a00c6198f3dae7784013...</span>
+          </div>
+        </div>
+
+        <!-- Custody Chain Timeline -->
+        <div class="pt-2">
+          <span class="text-xs uppercase tracking-wider font-semibold text-slate-400 flex items-center mb-2">
+            <i data-lucide="git-commit" class="w-3.5 h-3.5 mr-1 text-cyan-400"></i>
+            Custody Checkpoint Chain
+          </span>
+          <div id="custody-timeline" class="space-y-2 max-h-44 overflow-y-auto pr-1">
+            <!-- Dynamically populated checkpoints -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Live Merkle Block Explorer Feed -->
+      <div class="cyber-panel rounded-lg p-4 flex flex-col space-y-3 flex-1">
+        <div class="flex items-center justify-between border-b border-cyan-500/20 pb-2">
+          <div class="flex items-center space-x-2">
+            <i data-lucide="cubes" class="w-4 h-4 text-cyan-400"></i>
+            <h3 class="text-sm font-bold tracking-wider text-cyan-300">LIVE MERKLE BLOCK FEED</h3>
+          </div>
+          <div class="flex items-center space-x-2 text-[11px] font-mono text-slate-400">
+            <span>GAS CONSUMED:</span>
+            <span id="total-gas" class="text-amber-400 font-bold">114,000</span>
+          </div>
+        </div>
+
+        <!-- Blocks stream list -->
+        <div id="blocks-stream" class="space-y-2 max-h-64 overflow-y-auto pr-1 flex-1 text-xs font-mono">
+          <!-- Dynamically populated blocks -->
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ================= FOOTER / WHO CRACKDOWN BADGE ================= -->
+  <footer class="border-t border-slate-800/80 bg-[#080d16] px-4 py-2 text-center text-slate-500 text-xs font-mono flex flex-wrap items-center justify-between">
+    <div>
+      <span>TraceRx AI Engine • UPAI-Hackdays 2026 Submission • AI + Blockchain Track</span>
+    </div>
+    <div class="flex items-center space-x-4">
+      <span class="text-emerald-400 flex items-center">
+        <span class="pulse-dot pulse-dot-emerald mr-1.5"></span>
+        Zero External API Dependencies
+      </span>
+      <span>Port: 8080</span>
+    </div>
+  </footer>
+
+  <!-- Main JavaScript Controller -->
+  <script src="/static/app.js"></script>
+</body>
+</html>

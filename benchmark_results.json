@@ -1,0 +1,23 @@
+{
+  "benchmark_suite": "TraceRx-Forensic-Concurrency-Test",
+  "timestamp": "2026-09-07 18:55:09Z",
+  "total_scans": 500,
+  "concurrency_workers": 2,
+  "total_duration_sec": 3.011,
+  "throughput_scans_per_sec": 166.1,
+  "latency_metrics_ms": {
+    "mean": 12.0,
+    "min": 10.01,
+    "median_p50": 12.05,
+    "p90": 12.94,
+    "p95": 13.26,
+    "p99": 13.75,
+    "max": 14.47
+  },
+  "performance_verdict": "SUB_20MS_TARGET_ACHIEVED",
+  "system_profile": {
+    "vision_engine": "OpenCV-Laplacian-HSV-Forensics",
+    "ledger_engine": "In-Memory SHA-256 Merkle Engine",
+    "cloud_dependencies": "NONE (100% Local Out-of-the-Box)"
+  }
+}
