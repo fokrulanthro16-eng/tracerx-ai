@@ -27,7 +27,7 @@ jobs:
       - name: Install Python dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install opencv-python-headless pylibdmtx pytest pytest-asyncio web3 fastapi uvicorn pydantic
+          pip install opencv-python-headless pylibdmtx pytest pytest-asyncio web3 fastapi uvicorn pydantic httpx
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
       - name: Run Forensic Verification Test Suite
